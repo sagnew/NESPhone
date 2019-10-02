@@ -5,8 +5,8 @@ from scipy.stats import variation
 from mido import MidiFile
 
 
-DATA_DIRECTORY = '/Users/sagnew/Code/NESPhone/MIDI_Files'
-CLEANED_DATA_DIRECTORY = '/Users/sagnew/Talks/PyGotham/CLEANED_DATA'
+DATA_DIRECTORY = '/home/sam/Code/NESPhone/MIDI_Files'
+CLEANED_DATA_DIRECTORY = '/home/sam/Code/NESPhone/CLEANED_DATA'
 
 
 def note_variation(track):

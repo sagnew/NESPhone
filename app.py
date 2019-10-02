@@ -3,10 +3,9 @@ from twilio.twiml.voice_response import VoiceResponse
 
 import midi_converter
 
-
 # Temporary values for local development.
-UPLOAD_FOLDER = '/Users/sagnew/Talks/PyGotham/uploads/'
-HOSTING_URL='https://sagnew.ngrok.io/uploads'
+UPLOAD_FOLDER = '/home/sam/Code/NESPhone/uploads'
+HOSTING_URL='http//*server_url*/uploads'
 app = Flask(__name__)
 
 
@@ -27,4 +26,4 @@ def uploaded_file(filename):
     return send_from_directory(UPLOAD_FOLDER, filename)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
