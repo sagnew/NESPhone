@@ -15,20 +15,21 @@ def generate_midi(call_sid):
     output_dir = '{}/{}'.format(GENERATION_DIR, call_sid)
 
     # Using the model I trained. Change --run_dir to change the model used.
+    # args = ['polyphony_rnn_generate',
+    #         '--run_dir', 'tmp/polyphony_rnn/logdir/run2/',
+    #         '--output_dir', output_dir,
+    #         '--num_outputs', '1',
+    #         '--num_steps', '256']
+    #         # '--hparams', '"batch_size=128,rnn_layer_sizes=[128,128,128]"']
+    #         # '--primer_pitches', '[67,64,60]',
+    #         # '--condition_on_primer', 'true',
+    #         # '--inject_primer_during_generation', 'true']
+    # Using the backup model.
     args = ['polyphony_rnn_generate',
-            '--run_dir', 'tmp/polyphony_rnn/logdir/run1/',
+            '--bundle_file', rnn_model,
             '--output_dir', output_dir,
             '--num_outputs', '1',
             '--num_steps', '256']
-            # '--hparams', '"batch_size=128,rnn_layer_sizes=[256,256,256]"',
-            # '--primer_pitches', '[67,64,60]',
-            # '--condition_on_primer', 'true',
-            # '--inject_primer_during_generation', 'true']
-    # args = ['polyphony_rnn_generate',
-    #         '--bundle_file', rnn_model,
-    #         '--output_dir', output_dir,
-    #         '--num_outputs', '1',
-    #         '--num_steps', '256',
     #         '--primer_pitches', '[67,64,60]',
     #         '--condition_on_primer', 'true',
     #         '--inject_primer_during_generation', 'true']
@@ -36,3 +37,9 @@ def generate_midi(call_sid):
     midi_file = os.listdir(output_dir)[0]
 
     return '{}/{}'.format(output_dir, midi_file)
+
+
+def generate_nes_music(call_sid, output_file):
+    midi_file_path = generate_midi(call_sid)
+    to_audio(midi_file_path, output_file)
+

@@ -1,11 +1,16 @@
+import os
+
 from flask import Flask, request, send_from_directory
+from redis import Redis
+from rq import Queue
 from twilio.twiml.voice_response import VoiceResponse
 
 import midi_converter
 
 # Temporary values for local development.
 UPLOAD_FOLDER = '/home/sam/Code/NESPhone/uploads'
-HOSTING_URL='http//*server_url*/uploads'
+
+q = Queue(connection=Redis())
 app = Flask(__name__)
 
 
@@ -13,11 +18,29 @@ app = Flask(__name__)
 def call():
     call_sid = request.form['CallSid']
 
-    midi_file_path = midi_converter.generate_midi(call_sid)
-    midi_converter.to_audio(midi_file_path, '{}/{}.wav'.format(UPLOAD_FOLDER, call_sid))
+    output_file = '{}/{}.wav'.format(UPLOAD_FOLDER, call_sid)
+    q.enqueue(midi_converter.generate_nes_music, call_sid, output_file)
 
     resp = VoiceResponse()
-    resp.play('{}/{}.wav'.format(HOSTING_URL, call_sid))
+    resp.pause()
+    resp.say('Please wait while we generate some new Nintendo music for you.')
+    resp.redirect('/waiting_room')
+
+    return str(resp)
+
+
+@app.route('/waiting_room', methods=['POST'])
+def wait():
+    call_sid = request.form['CallSid']
+    output_file = '{}/{}.wav'.format(UPLOAD_FOLDER, call_sid)
+
+    resp = VoiceResponse()
+
+    if os.path.isfile(output_file):
+        resp.play('/uploads/{}.wav'.format(call_sid))
+    else:
+        resp.pause(length=2)
+        resp.redirect('/waiting_room')
     return str(resp)
 
 
