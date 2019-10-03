@@ -1,9 +1,14 @@
 import os, re, subprocess
 
+from twilio.rest import Client
 
+
+APP_URL = os.environ.get('APP_URL')
 GENERATION_DIR = '/home/sam/Code/NESPhone/tmp/polyphony_rnn/generated'
 soundfont = '/home/sam/Code/NESPhone/Famicom.sf2'
 rnn_model = '/home/sam/Code/NESPhone/backup_rnn.mag'
+
+client = Client()
 
 
 def to_audio(midi_file, output_file):
@@ -42,4 +47,5 @@ def generate_midi(call_sid):
 def generate_nes_music(call_sid, output_file):
     midi_file_path = generate_midi(call_sid)
     to_audio(midi_file_path, output_file)
+    client.calls(call_sid).update(url='{}/play_music'.format(APP_URL))
 

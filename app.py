@@ -24,23 +24,20 @@ def call():
     resp = VoiceResponse()
     resp.pause()
     resp.say('Please wait while we generate some new Nintendo music for you.')
-    resp.redirect('/waiting_room')
+
+    # Wait until we asynchronously update the call after music is generated.
+    resp.pause(length=100)
 
     return str(resp)
 
 
-@app.route('/waiting_room', methods=['POST'])
-def wait():
+@app.route('/play_music', methods=['POST'])
+def play():
     call_sid = request.form['CallSid']
     output_file = '{}/{}.wav'.format(UPLOAD_FOLDER, call_sid)
 
     resp = VoiceResponse()
-
-    if os.path.isfile(output_file):
-        resp.play('/uploads/{}.wav'.format(call_sid))
-    else:
-        resp.pause(length=2)
-        resp.redirect('/waiting_room')
+    resp.play('/uploads/{}.wav'.format(call_sid))
     return str(resp)
 
 
