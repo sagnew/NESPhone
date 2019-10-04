@@ -6,7 +6,7 @@ from twilio.rest import Client
 APP_URL = os.environ.get('APP_URL')
 GENERATION_DIR = '/home/sam/Code/NESPhone/tmp/polyphony_rnn/generated'
 soundfont = '/home/sam/Code/NESPhone/Famicom.sf2'
-rnn_model = '/home/sam/Code/NESPhone/backup_rnn.mag'
+rnn_model = '/home/sam/Code/NESPhone/nes_rnn.mag'
 
 client = Client()
 

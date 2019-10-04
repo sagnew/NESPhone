@@ -5,7 +5,7 @@ from redis import Redis
 from rq import Queue
 from twilio.twiml.voice_response import VoiceResponse
 
-import midi_converter
+import music_generator
 
 # Temporary values for local development.
 UPLOAD_FOLDER = '/home/sam/Code/NESPhone/uploads'
