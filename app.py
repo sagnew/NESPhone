@@ -19,7 +19,7 @@ def call():
     call_sid = request.form['CallSid']
 
     output_file = '{}/{}.wav'.format(UPLOAD_FOLDER, call_sid)
-    q.enqueue(midi_converter.generate_nes_music, call_sid, output_file)
+    q.enqueue(music_generator.generate_nes_music, call_sid, output_file)
 
     resp = VoiceResponse()
     resp.pause()
